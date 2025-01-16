@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "dataFactoryName": {
-            "value": "adf-cicd-demo"
+            "value": "adf-cicd-demo-fg46r"
         },
         "environment": {
             "value": "development"
