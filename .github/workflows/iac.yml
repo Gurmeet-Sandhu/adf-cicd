@@ -1,0 +1,54 @@
+name: Deploy Azure Data Factory
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'iac/adf.bicep'
+  
+permissions:
+ id-token: write
+ contents: write
+
+env:
+  DEV_SUB: 34176af6-6df0-47ef-a8cb-99f46d66332c
+  DEV_RG: rg-adf
+
+
+ 
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+
+    ######################################################################
+    # Login to Azure
+    ######################################################################
+    - name: 🔑 Login to Azure
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+
+    ######################################################################
+    # Deploy Azure Data Factory
+    ######################################################################
+
+    - name: Deploy ADF
+      shell: pwsh
+      run: |
+        $deployment=az deployment group create `
+              --resource-group $env:DEV_SUB `
+              --subscription $env:DEV_RG `
+              --template-file ./iac/adf.bicep `
+              --parameters ./iac/adf.parameters.json | ConvertFrom-Json
+
+        Write-Host $deployment
