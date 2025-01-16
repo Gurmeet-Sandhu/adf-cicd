@@ -46,8 +46,8 @@ jobs:
       shell: pwsh
       run: |
         $deployment=az deployment group create `
-              --resource-group $env:DEV_SUB `
-              --subscription $env:DEV_RG `
+              --resource-group $env:DEV_RG `
+              --subscription $env:DEV_SUB `
               --template-file ./iac/adf.bicep `
               --parameters ./iac/adf.parameters.json | ConvertFrom-Json
 
