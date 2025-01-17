@@ -50,8 +50,8 @@ jobs:
         $deployment=az deployment group create `
               --resource-group $env:DEV_RG `
               --subscription $env:DEV_SUB `
-              --template-file ./iac/adf.bicep `
-              --parameters ./iac/adf.parameters.json `
+              --template-file ./iac/iac.bicep `
+              --parameters ./iac/iac.parameters.json `
               --parameters ghAppClientIdValue=${{ secrets.GH_APP_CLIENT_ID }} `
               --parameters ghAppClientSecretValue=${{ secrets.GH_APP_CLIENT_SECRET }} | ConvertFrom-Json
 
