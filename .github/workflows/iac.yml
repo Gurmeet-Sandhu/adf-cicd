@@ -8,6 +8,7 @@ on:
     paths:
       - 'iac/adf.bicep'
       - '.github/workflows/iac.yml'
+      - 'iac/adf.parameters.json'
   
 permissions:
  id-token: write
