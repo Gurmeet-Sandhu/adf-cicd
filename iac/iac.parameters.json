@@ -19,6 +19,9 @@
         },
         "rootFolder": {
             "value": "/src/"
+        },
+        "managedIdentityName": {
+            "value": "adf-uami"
         }
     }
 }
