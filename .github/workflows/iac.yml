@@ -51,6 +51,8 @@ jobs:
               --resource-group $env:DEV_RG `
               --subscription $env:DEV_SUB `
               --template-file ./iac/adf.bicep `
-              --parameters ./iac/adf.parameters.json | ConvertFrom-Json
+              --parameters ./iac/adf.parameters.json `
+              --parameters ghAppClientIdValue=${{ secrets.GH_APP_CLIENT_ID }} `
+              --parameters ghAppClientSecretValue=${{ secrets.GH_APP_CLIENT_SECRET }} | ConvertFrom-Json
 
         Write-Host $deployment

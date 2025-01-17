@@ -1,46 +1,46 @@
-on:
-  workflow_dispatch:
-  push:
-    branches:
-    - main
+# on:
+#   workflow_dispatch:
+#   push:
+#     branches:
+#     - main
 
-permissions:
-      id-token: write
-      contents: read
+# permissions:
+#       id-token: write
+#       contents: read
 
-env:
-  DEV_SUB: 34176af6-6df0-47ef-a8cb-99f46d66332c
-  DEV_RG: rg-adf
+# env:
+#   DEV_SUB: 34176af6-6df0-47ef-a8cb-99f46d66332c
+#   DEV_RG: rg-adf
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
 
-    - uses: actions/checkout@v3
-# Installs Node and the npm packages saved in your package.json file in the build
-    - name: Setup Node.js environment
-      uses: actions/setup-node@v3.4.1
-      with:
-        node-version: 20.x
+#     - uses: actions/checkout@v3
+# # Installs Node and the npm packages saved in your package.json file in the build
+#     - name: Setup Node.js environment
+#       uses: actions/setup-node@v3.4.1
+#       with:
+#         node-version: 18.x
         
-    - name: install ADF Utilities package
-      run: npm install
-      working-directory: ${{github.workspace}}/src/build  # (1) provide the folder location of the package.json file
+#     - name: install ADF Utilities package
+#       run: npm install
+#       working-directory: ${{github.workspace}}/src/build  # (1) provide the folder location of the package.json file
         
-# Validates all of the Data Factory resources in the repository. You'll get the same validation errors as when "Validate All" is selected.
-    - name: Validate
-      run: npm run build validate ${{github.workspace}}/src/ /subscriptions/${{env.DEV_SUB}}/resourceGroups/${{ env.DEV_RG }}/providers/Microsoft.DataFactory/factories/adf-cicd-demo-fg46r # (2) The validate command needs the root folder location of your repository where all the objects are stored. And the 2nd parameter is the resourceID of the ADF instance 
-      working-directory: ${{github.workspace}}/src/build
+# # Validates all of the Data Factory resources in the repository. You'll get the same validation errors as when "Validate All" is selected.
+#     - name: Validate
+#       run: npm run build validate ${{github.workspace}}/src/ /subscriptions/${{env.DEV_SUB}}/resourceGroups/${{ env.DEV_RG }}/providers/Microsoft.DataFactory/factories/adf-cicd-demo-fg46r # (2) The validate command needs the root folder location of your repository where all the objects are stored. And the 2nd parameter is the resourceID of the ADF instance 
+#       working-directory: ${{github.workspace}}/src/build
  
 
-    - name: Validate and Generate ARM template
-      run: npm run build export ${{github.workspace}}/src/ /subscriptions/${{ env.DEV_SUB }}/resourceGroups/${{ env.DEV_RG }}/providers/Microsoft.DataFactory/factories/adf-cicd-demo-fg46r "ExportedArmTemplate"  # (3) The build command, as validate, needs the root folder location of your repository where all the objects are stored. And the 2nd parameter is the resourceID of the ADF instance. The 3rd parameter is the exported ARM template artifact name 
-      working-directory: ${{github.workspace}}/src/build
+#     - name: Validate and Generate ARM template
+#       run: npm run build export ${{github.workspace}}/src/ /subscriptions/${{ env.DEV_SUB }}/resourceGroups/${{ env.DEV_RG }}/providers/Microsoft.DataFactory/factories/adf-cicd-demo-fg46r "ExportedArmTemplate"  # (3) The build command, as validate, needs the root folder location of your repository where all the objects are stored. And the 2nd parameter is the resourceID of the ADF instance. The 3rd parameter is the exported ARM template artifact name 
+#       working-directory: ${{github.workspace}}/src/build
  
-# In order to leverage the artifact in another job, we need to upload it with the upload action 
-    - name: upload artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: ExportedArmTemplate # (4) use the same artifact name you used in the previous export step
-        path: ${{github.workspace}}/src/build/ExportedArmTemplate
+# # In order to leverage the artifact in another job, we need to upload it with the upload action 
+#     - name: upload artifact
+#       uses: actions/upload-artifact@v3
+#       with:
+#         name: ExportedArmTemplate # (4) use the same artifact name you used in the previous export step
+#         path: ${{github.workspace}}/src/build/ExportedArmTemplate
