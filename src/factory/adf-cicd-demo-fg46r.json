@@ -1,0 +1,9 @@
+{
+	"name": "adf-cicd-demo-fg46r",
+	"location": "westus2",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "2dc709c2-7244-4ea8-9b5c-0d56552dcb75",
+		"tenantId": "f9e0ca1c-4a3c-4955-a7cf-a0fb217ff2d0"
+	}
+}
