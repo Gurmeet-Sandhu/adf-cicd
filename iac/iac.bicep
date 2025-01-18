@@ -67,14 +67,6 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-10-01' = {
   }
 }
 
-resource clientId 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
-  parent: keyVault
-  name: 'clientId'
-  properties: {
-    value: ghAppClientIdValue
-  }
-}
-
 resource clientSecret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
   parent: keyVault
   name: 'clientSecret'
@@ -103,7 +95,7 @@ var gitHubRepoConfiguration = {
   collaborationBranch: collaborationBranch
   disablePublish: true
   rootFolder: rootFolder
-  clientId: clientId.name
+  clientId: ghAppClientIdValue
   clientSecret: {
     byoaSecretAkvUrl: keyVault.properties.vaultUri
     byoaSecretName: clientSecret.name
