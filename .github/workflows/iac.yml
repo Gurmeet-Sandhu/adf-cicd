@@ -6,9 +6,9 @@ on:
     branches:
       - main
     paths:
-      - 'iac/adf.bicep'
+      - 'iac/iac.bicep'
       - '.github/workflows/iac.yml'
-      - 'iac/adf.parameters.json'
+      - 'iac/iac.parameters.json'
   
 permissions:
  id-token: write

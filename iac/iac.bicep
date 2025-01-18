@@ -19,6 +19,16 @@ param keyVaultSku object = {
   family: 'A'
 }
 
+@description('Specifies the permissions to keys in the vault. Valid values are: all, encrypt, decrypt, wrapKey, unwrapKey, sign, verify, get, list, create, update, import, delete, backup, restore, recover, and purge.')
+param keysPermissions array = [
+  'all'
+]
+
+@description('Specifies the permissions to secrets in the vault. Valid values are: all, get, list, set, delete, backup, restore, recover, and purge.')
+param secretsPermissions array = [
+  'all'
+]
+
 @description('Specifies the value of the secret that you want to create.')
 @secure()
 param ghAppClientIdValue string
@@ -44,6 +54,16 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-10-01' = {
     enableRbacAuthorization: true
     tenantId: tenant().tenantId
     sku: keyVaultSku
+    accessPolicies: [
+      {
+        objectId: managedIdentity.id
+        tenantId: tenant().tenantId
+        permissions: {
+          keys: keysPermissions
+          secrets: secretsPermissions
+        }
+      }
+    ]
   }
 }
 
@@ -64,15 +84,15 @@ resource clientSecret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
 }
 
 // Resource: Role Assignment for Managed Identity
-resource keyVaultSecretReaderRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: 'KeyVaultSecretReaderRole'
-  scope: keyVault
-  properties: {
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b86a8fe0-442b-45d4-8639-7b7b4e1d07b0') // Key Vault Secrets User role definition ID
-    principalId: managedIdentity.identity.principalId
-    principalType: 'ServicePrincipal'
-  }
-}
+// resource keyVaultSecretReaderRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+//   name: 'KeyVaultSecretReaderRole'
+//   scope: keyVault
+//   properties: {
+//     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b86a8fe0-442b-45d4-8639-7b7b4e1d07b0') // Key Vault Secrets User role definition ID
+//     principalId: managedIdentity.id
+//     principalType: 'ServicePrincipal'
+//   }
+// }
 
 
 //******************** Azure Data Factory ********************//
