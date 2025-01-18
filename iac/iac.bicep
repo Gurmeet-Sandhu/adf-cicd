@@ -56,7 +56,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-10-01' = {
     sku: keyVaultSku
     accessPolicies: [
       {
-        objectId: managedIdentity.id
+        objectId: managedIdentity.identity.principalId
         tenantId: tenant().tenantId
         permissions: {
           keys: keysPermissions
